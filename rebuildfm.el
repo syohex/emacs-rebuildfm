@@ -22,6 +22,14 @@
 
 ;;; Commentary:
 
+;; rebuildfm.el is a emacs client of rebuild.fm(http://rebuild.fm/).
+;;
+;; rebuildfm.el provides showing podscasts list with helm interface.
+;; Its actions are
+;;   - Listen podcast mp3(requires `avplay' or `ffplay')
+;;   - Browse podcast page
+;;
+
 ;;; Code:
 
 (require 'helm)
