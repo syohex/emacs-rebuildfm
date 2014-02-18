@@ -13,7 +13,7 @@ A Emacs client of [rebuild.fm](http://rebuild.fm/).
 * Emacs 24 or higher(`libxml` support should be enabled).
 * [helm](https://github.com/emacs-helm/helm)
 * [cl-lib](http://elpa.gnu.org/packages/cl-lib.html)(For Emacs 24.1, Emacs 24.2 users)
-* [avplay](https://libav.org/avplay.html) or [ffplay](http://www.ffmpeg.org/ffplay.html)
+* [avplay](https://libav.org/avplay.html) or [ffplay](http://www.ffmpeg.org/ffplay.html) or [itunes](http://www.apple.com/itunes/)(MacOSX)
 
 
 ## Actions
