@@ -37,6 +37,8 @@
 (require 'url)
 (require 'cl-lib)
 
+(declare-function do-applescript "nsfns.m")
+
 (defgroup rebuildfm nil
   "rebuildfm client"
   :group 'applications)
