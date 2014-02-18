@@ -75,10 +75,11 @@ to open mp3 URL"
                                   (and e (listp e))) item)))
     (let ((title (rebuildfm--extract-tag-value 'title tree))
           (link  (rebuildfm--extract-tag-value 'link tree))
+          (pubdate (rebuildfm--extract-tag-value 'pubDate tree))
           (summary (rebuildfm--extract-tag-value 'summary tree))
           (mp3-url (rebuildfm--extract-tag-attribute 'enclosure 'url tree)))
       (cons title
-            (list :link link :summary summary :mp3-url mp3-url)))))
+            (list :link link :summary summary :pubdate pubdate :mp3-url mp3-url)))))
 
 (defun rebuildfm--parse-feed (buf)
   (with-current-buffer buf
@@ -100,9 +101,16 @@ to open mp3 URL"
 (defun rebuildfm--collect-podcasts ()
   (rebuildfm--get-feeds rebuildfm--feeds-url))
 
+(defun rebuildfm--format-pubdate (pubdate)
+  (if (string-match "\\`\\([a-zA-Z]+\\), \\([0-9]+\\) \\([a-zA-Z]+\\) \\([0-9]+\\)" pubdate)
+      (match-string-no-properties 0 pubdate)
+    pubdate))
+
 (defun rebuildfm--persistent-action (item)
   (with-help-window (help-buffer)
-    (princ (plist-get item :summary))))
+    (princ (format "[%s]\n%s"
+                   (rebuildfm--format-pubdate (plist-get item :pubdate))
+                   (plist-get item :summary)))))
 
 (defun rebuildfm--mp3-player-command (cmd url)
   (cond ((member cmd '("avplay" "ffplay"))
