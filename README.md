@@ -50,6 +50,7 @@ Stop playing MP3 player
 #### `rebuildfm-mp3-player`
 
 A player for playing mp3 file. Now only `avplay` and `ffplay` are supported.
+(`itunes` is used on MacOSX)
 
 
 ## See Also
