@@ -32,6 +32,14 @@ A Emacs client of [rebuild.fm](http://rebuild.fm/).
 
 List Podcast list with helm interface
 
+#### `rebuildfm-pause`
+
+Pause podcast
+
+#### `rebuildfm-resume`
+
+Resume podcast
+
 #### `rebuildfm-stop`
 
 Stop playing MP3 player
