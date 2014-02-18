@@ -5,7 +5,7 @@
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-rebuildfm
 ;; Version: 0.01
-;; Package-Requires: ((helm "1.5.6") (cl-lib "0.4"))
+;; Package-Requires: ((helm "1.0") (cl-lib "0.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
