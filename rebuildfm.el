@@ -181,7 +181,7 @@ end tell" url)))
   (if (rebuildfm--macosx-p)
       (rebuildfm--playpause-itunes)
     (let ((proc (rebuildfm--player-process)))
-      (signal-process proc 'SIGPAUSE))))
+      (signal-process proc 'SIGSTOP))))
 
 ;;;###autoload
 (defun rebuildfm-resume ()
