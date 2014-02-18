@@ -26,7 +26,7 @@
 ;;
 ;; rebuildfm.el provides showing podscasts list with helm interface.
 ;; Its actions are
-;;   - Listen podcast mp3(requires `avplay' or `ffplay')
+;;   - Play podcast mp3(requires `avplay' or `ffplay')
 ;;   - Browse podcast page
 ;;
 
@@ -43,7 +43,7 @@
 
 (defcustom rebuildfm-mp3-player (or (and (executable-find "avplay") "avplay")
                                     (and (executable-find "ffplay") "ffplay"))
-  "MP3 player for listening podcast. The player should support
+  "MP3 player for playing podcast. The player should support
 to open mp3 URL"
   :type 'string
   :group 'rebuildfm)
@@ -108,7 +108,7 @@ to open mp3 URL"
         (t
          (error "'%s' is not supported!!" cmd))))
 
-(defun rebuildfm--listen-podcast (item)
+(defun rebuildfm--play-podcast (item)
   (let ((mp3-url (plist-get item :mp3-url))
         (buf (get-buffer-create "*rebuildfm mp3*")))
     (start-process-shell-command
@@ -123,7 +123,7 @@ to open mp3 URL"
   '((name . "Rebuildfm Podcasts")
     (candidates . rebuildfm--collect-podcasts)
     (persistent-action . rebuildfm--persistent-action)
-    (action . (("Listen Podcast" . rebuildfm--listen-podcast)
+    (action . (("Play Podcast" . rebuildfm--play-podcast)
                ("Browse Podcast Page" . rebuildfm--browse-page)))))
 
 ;;;###autoload
