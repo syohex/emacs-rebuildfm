@@ -26,7 +26,7 @@
 ;;
 ;; rebuildfm.el provides showing podscasts list with helm interface.
 ;; Its actions are
-;;   - Play podcast mp3(requires `avplay' or `ffplay')
+;;   - Play podcast mp3(requires `avplay' or `ffplay' or `itunes')
 ;;   - Browse podcast page
 ;;
 
@@ -108,12 +108,26 @@ to open mp3 URL"
         (t
          (error "'%s' is not supported!!" cmd))))
 
+(defsubst rebuildfm--macosx-p ()
+  (eq system-type 'darwin))
+
+(defun rebuildfm--play-itunes (url)
+  (interactive "")
+  (do-applescript
+   (format "
+tell application \"iTunes\"
+  open location \"%s\"
+  play
+end tell" url)))
+
 (defun rebuildfm--play-podcast (item)
   (let ((mp3-url (plist-get item :mp3-url))
         (buf (get-buffer-create "*rebuildfm mp3*")))
-    (start-process-shell-command
-     "rebuildfm-mp3" buf
-     (rebuildfm--mp3-player-command rebuildfm-mp3-player mp3-url))))
+    (if (rebuildfm--macosx-p)
+        (rebuildfm--play-itunes mp3-url)
+      (start-process-shell-command
+       "rebuildfm-mp3" buf
+       (rebuildfm--mp3-player-command rebuildfm-mp3-player mp3-url)))))
 
 (defun rebuildfm--browse-page (item)
   (let ((link (plist-get item :link)))
@@ -131,16 +145,51 @@ to open mp3 URL"
   (interactive)
   (helm :sources '(helm-rebuildfm-source) :buffer "*rebuildfm*"))
 
+(defun rebuildfm--stop-itunes ()
+  (do-applescript
+   "tell application \"iTunes\"
+      stop
+    end tell"))
+
+(defun rebuildfm--player-process ()
+  (let ((buf (get-buffer "*rebuildfm mp3*")))
+    (if (not buf)
+        (error "process buffer is already deleted")
+      (let ((proc (get-buffer-process buf)))
+        (unless proc
+          (error "mp3 player process is already dead"))
+        proc))))
+
 ;;;###autoload
 (defun rebuildfm-stop ()
   (interactive)
-  (let ((buf (get-buffer "*rebuildfm mp3*")))
-    (if (not buf)
-        (message "already stopped")
-      (let ((proc (get-buffer-process buf)))
-        (when proc
-          (when (yes-or-no-p "Stop MP3 Player? ")
-            (kill-process proc)))))))
+  (when (yes-or-no-p "Stop MP3 Player? ")
+    (if (rebuildfm--macosx-p)
+        (rebuildfm--stop-itunes)
+      (let ((proc (rebuildfm--player-process)))
+        (kill-process proc)))))
+
+(defun rebuildfm--playpause-itunes ()
+  (do-applescript
+   "tell application \"iTunes\"
+      playpause
+    end tell"))
+
+;;;###autoload
+(defun rebuildfm-pause ()
+  (interactive)
+  (if (rebuildfm--macosx-p)
+      (rebuildfm--playpause-itunes)
+    (let ((proc (rebuildfm--player-process)))
+      (signal-process proc 'SIGPAUSE))))
+
+;;;###autoload
+(defun rebuildfm-resume ()
+  (interactive)
+  (if (rebuildfm--macosx-p)
+      (rebuildfm--playpause-itunes)
+    (let ((proc (rebuildfm--player-process)))
+      (signal-process proc 'SIGCONT))))
 
 (provide 'rebuildfm)
 
