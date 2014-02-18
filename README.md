@@ -42,3 +42,8 @@ Stop playing MP3 player
 #### `rebuildfm-mp3-player`
 
 A player for playing mp3 file. Now only `avplay` and `ffplay` are supported.
+
+
+## See Also
+
+- [http://rebuild.fm/](http://rebuild.fm/)
