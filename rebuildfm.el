@@ -46,8 +46,13 @@
 (defcustom rebuildfm-mp3-player (or (and (executable-find "avplay") "avplay")
                                     (and (executable-find "ffplay") "ffplay"))
   "MP3 player for playing podcast. The player should support
-to open mp3 URL"
+to open mp3 URL."
   :type 'string
+  :group 'rebuildfm)
+
+(defcustom rebuildfm-play-podcast-hook nil
+  "Hook that gets run after podcast is played"
+  :type 'hook
   :group 'rebuildfm)
 
 (defconst rebuildfm--feeds-url "http://feeds.rebuild.fm/rebuildfm")
@@ -79,7 +84,8 @@ to open mp3 URL"
           (summary (rebuildfm--extract-tag-value 'summary tree))
           (mp3-url (rebuildfm--extract-tag-attribute 'enclosure 'url tree)))
       (cons title
-            (list :link link :summary summary :pubdate pubdate :mp3-url mp3-url)))))
+            (list :title title :link link :summary summary
+                  :pubdate pubdate :mp3-url mp3-url)))))
 
 (defun rebuildfm--parse-feed (buf)
   (with-current-buffer buf
@@ -137,7 +143,8 @@ end tell" url)))
         (rebuildfm--play-itunes mp3-url)
       (start-process-shell-command
        "rebuildfm-mp3" buf
-       (rebuildfm--mp3-player-command rebuildfm-mp3-player mp3-url)))))
+       (rebuildfm--mp3-player-command rebuildfm-mp3-player mp3-url))
+      (run-hook-with-args 'rebuildfm-play-podcast-hook item))))
 
 (defun rebuildfm--browse-page (item)
   (let ((link (plist-get item :link)))
