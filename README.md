@@ -52,6 +52,23 @@ Stop playing MP3 player
 A player for playing mp3 file. Now only `avplay` and `ffplay` are supported.
 (`itunes` is used on MacOSX)
 
+#### `rebuildfm-play-podcast-hook`
+
+Hook that runs after playing podcast. Its function takes one argument
+which is `plist` which has `:title`, `:link`, `:summary`, `:pubdate`, `mp3-url`.
+
+
+Following code is hook example.
+
+```lisp
+(require 'notifications)
+(defun my/rebuildfm-hook (item)
+  (notifications-notify :title (plist-get item :title)
+                        :body  (plist-get item :summary)
+                        :timeout 2000))
+(add-hook 'rebuildfm-play-podcast-hook 'my/rebuildfm-hook)
+```
+
 
 ## See Also
 
