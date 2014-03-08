@@ -1,4 +1,4 @@
-;;; rebuildfm.el --- Emacs rebuildfm client
+;;; rebuildfm.el --- Emacs rebuildfm client -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2014 by Syohei YOSHIDA
 
