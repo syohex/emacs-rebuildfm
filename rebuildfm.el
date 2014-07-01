@@ -120,7 +120,7 @@ to open mp3 URL."
 
 (defun rebuildfm--mp3-player-command (cmd url)
   (cond ((member cmd '("avplay" "ffplay"))
-         (format "%s -autoexit -nodisp %s" cmd url))
+         (list cmd "-autoexit" "-nodisp" url))
         (t
          (error "'%s' is not supported!!" cmd))))
 
@@ -141,9 +141,9 @@ end tell" url)))
         (buf (get-buffer-create "*rebuildfm mp3*")))
     (if (rebuildfm--macosx-p)
         (rebuildfm--play-itunes mp3-url)
-      (start-process-shell-command
-       "rebuildfm-mp3" buf
-       (rebuildfm--mp3-player-command rebuildfm-mp3-player mp3-url))
+      (apply 'start-process
+             "rebuildfm-mp3" buf
+             (rebuildfm--mp3-player-command rebuildfm-mp3-player mp3-url))
       (run-hook-with-args 'rebuildfm-play-podcast-hook item))))
 
 (defun rebuildfm--browse-page (item)
