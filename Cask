@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(package "rebuildfm" "0.01" "rebuild.fm with helm interface")
+(package-file "rebuildfm.el")
 
 (depends-on "cl-lib")
 (depends-on "helm")
