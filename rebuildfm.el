@@ -141,7 +141,7 @@ end tell" url)))
         (buf (get-buffer-create "*rebuildfm mp3*")))
     (if (rebuildfm--macosx-p)
         (rebuildfm--play-itunes mp3-url)
-      (apply 'start-process
+      (apply 'start-file-process
              "rebuildfm-mp3" buf
              (rebuildfm--mp3-player-command rebuildfm-mp3-player mp3-url))
       (run-hook-with-args 'rebuildfm-play-podcast-hook item))))
